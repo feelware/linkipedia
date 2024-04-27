@@ -5,17 +5,16 @@ import useData from "../../store/useData"
 import api from "../../services/api"
 
 const SearchBar = () => {
-  const combobox = useCombobox({
-    onDropdownClose: () => combobox.resetSelectedOption(),
-  })
-
   const { mainArticle, setMainArticle } = useData()
-
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState(null)
   const [value, setValue] = useState(mainArticle)
   const [empty, setEmpty] = useState(false)
   const abortController = useRef()
+
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  })
 
   const [debounced] = useDebouncedValue(value, 500)
 
@@ -24,7 +23,6 @@ const SearchBar = () => {
       setData(null)
       return
     }
-
     abortController.current?.abort()
     abortController.current = new AbortController()
     setLoading(true)
@@ -46,8 +44,7 @@ const SearchBar = () => {
 
   const options = (data || [])
     .filter((item) => item.display.description) 
-    .map((item) => {
-    return (
+    .map((item) => (
       <Combobox.Option value={item.display.label.value} key={item.id}>
         <div style={{ margin: 5 }}>
           <h4 style={{ margin: 0 }}>
@@ -58,8 +55,7 @@ const SearchBar = () => {
           </p>
         </div>
       </Combobox.Option>
-    )
-  })
+    ))
 
   return (
     <Affix position={{ top: 20, left: 20 }}>
@@ -74,11 +70,10 @@ const SearchBar = () => {
       >
         <Combobox.Target>
           <TextInput
-            placeholder="Busca un artículo"
+            placeholder="Search an article"
             value={value}
             onChange={(event) => {
               setValue(event.currentTarget.value)
-              // fetchOptions(event.currentTarget.value)
               if (event.currentTarget.value != '') {
                 combobox.resetSelectedOption()
                 combobox.openDropdown()
@@ -97,7 +92,7 @@ const SearchBar = () => {
         <Combobox.Dropdown hidden={data === null}>
           <Combobox.Options mah={450} style={{ overflowY: 'auto' }}>
             {options}
-            {empty && <Combobox.Empty>Sin resultados</Combobox.Empty>}
+            {empty && <Combobox.Empty>No results</Combobox.Empty>}
           </Combobox.Options>
         </Combobox.Dropdown>
       </Combobox>
