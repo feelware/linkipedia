@@ -1,4 +1,4 @@
-// import Graph from './layout/Graph'
+import Graph from './layout/Graph'
 import SearchBar from './layout/SearchBar'
 
 const App = () => {
@@ -6,7 +6,7 @@ const App = () => {
   return (
     <>
       <SearchBar />
-      {/* <Graph /> */}
+      <Graph />
     </>
   )
 }

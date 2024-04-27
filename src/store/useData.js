@@ -9,9 +9,14 @@ const useData = create((set) => ({
   mainArticle: '',
 
   setMainArticle: async (mainArticle) => {
-    
-    
-    set({ 
+    set({
+      graphData: {
+        nodes: [{
+          id: mainArticle
+        }],
+        links: []
+      },
+
       mainArticle 
     })
   }
