@@ -44,11 +44,22 @@ const SearchBar = () => {
     fetchOptions(debounced)
   }, [debounced])
 
-  const options = (data || []).map((item) => (
-    <Combobox.Option value={item} key={item}>
-      {item}
-    </Combobox.Option>
-  ))
+  const options = (data || [])
+    .filter((item) => item.display.description) 
+    .map((item) => {
+    return (
+      <Combobox.Option value={item.display.label.value} key={item.id}>
+        <div style={{ margin: 5 }}>
+          <h4 style={{ margin: 0 }}>
+            {item.display.label.value}
+          </h4>
+          <p style={{ margin: 0 }}>
+            {item.display.description.value}
+          </p>
+        </div>
+      </Combobox.Option>
+    )
+  })
 
   return (
     <Affix position={{ top: 20, left: 20 }}>
@@ -77,19 +88,14 @@ const SearchBar = () => {
               }
             }}
             onClick={() => combobox.openDropdown()}
-            // onFocus={() => {
-            //   combobox.openDropdown()
-            //   if (data === null) {
-            //     fetchOptions(value)
-            //   }
-            // }}
+            onFocus={() => combobox.openDropdown()}
             onBlur={() => combobox.closeDropdown()}
-            rightSection={loading && <Loader size={18} />}
+            rightSection={loading && <Loader size={18} /> }
           />
         </Combobox.Target>
 
         <Combobox.Dropdown hidden={data === null}>
-          <Combobox.Options>
+          <Combobox.Options mah={450} style={{ overflowY: 'auto' }}>
             {options}
             {empty && <Combobox.Empty>Sin resultados</Combobox.Empty>}
           </Combobox.Options>

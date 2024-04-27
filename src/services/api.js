@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const getUrl = (input) => `https://en.wikipedia.org/w/rest.php/v1/search/page?q=${input}&limit=5`
+const getUrl = (input) => `https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&type=item&continue=0&origin=*&search=${input}`
 
 
 const searchArticles = async (input, signal) => {
@@ -9,7 +9,7 @@ const searchArticles = async (input, signal) => {
     headers: { 'User-Agent': 'Linkipedia/0.0 (https://linkipedia.vercel.app/; stevanpersonal@gmail.com' } 
   })
   // console.log(res)
-  return res.data.pages.map(r => r.title)
+  return res.data.search
 }
 
 export default {
