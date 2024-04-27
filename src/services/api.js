@@ -8,7 +8,7 @@ const searchArticles = async (input, signal) => {
     signal,
     headers: { 'User-Agent': 'Linkipedia/0.0 (https://linkipedia.vercel.app/; stevanpersonal@gmail.com' } 
   })
-  console.log(res)
+  // console.log(res)
   return res.data.pages.map(r => r.title)
 }
 

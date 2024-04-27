@@ -1,5 +1,5 @@
-import { useState, useRef } from "react"
-// import { useDebouncedValue } from '@mantine/hooks'
+import { useState, useRef, useEffect } from "react"
+import { useDebouncedValue } from '@mantine/hooks'
 import { Affix, Combobox, Loader, TextInput, useCombobox } from "@mantine/core"
 import useData from "../../store/useData"
 import api from "../../services/api"
@@ -17,7 +17,7 @@ const SearchBar = () => {
   const [empty, setEmpty] = useState(false)
   const abortController = useRef()
 
-  // const [debounced] = useDebouncedValue(value, 500)
+  const [debounced] = useDebouncedValue(value, 500)
 
   const fetchOptions = async (query) => {
     if (query == '') {
@@ -39,6 +39,10 @@ const SearchBar = () => {
     }
     abortController.current = undefined
   }
+
+  useEffect(() => {
+    fetchOptions(debounced)
+  }, [debounced])
 
   const options = (data || []).map((item) => (
     <Combobox.Option value={item} key={item}>
@@ -63,7 +67,7 @@ const SearchBar = () => {
             value={value}
             onChange={(event) => {
               setValue(event.currentTarget.value)
-              fetchOptions(event.currentTarget.value)
+              // fetchOptions(event.currentTarget.value)
               if (event.currentTarget.value != '') {
                 combobox.resetSelectedOption()
                 combobox.openDropdown()
