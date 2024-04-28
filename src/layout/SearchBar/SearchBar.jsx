@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { useDebouncedValue } from '@mantine/hooks'
 import { Affix, Combobox, Loader, TextInput, useCombobox } from "@mantine/core"
 import useData from "../../store/useData"
-import api from "../../services/api"
+import wikiData from "../../services/wikiData"
 
 const SearchBar = () => {
   const { mainArticle, setMainArticle } = useData()
@@ -27,12 +27,13 @@ const SearchBar = () => {
     abortController.current = new AbortController()
     setLoading(true)
     try {
-      const result = await api.searchArticles(query, abortController.current.signal)
+      const result = await wikiData.searchArticles(query, abortController.current.signal)
+      console.log(result)
       setData(result)
       setLoading(false)
       setEmpty(result.length === 0)
     } catch (error) {
-      console.log(error.name)
+      console.log(error.name) 
       return
     }
     abortController.current = undefined
@@ -45,10 +46,16 @@ const SearchBar = () => {
   const options = (data || [])
     .filter((item) => item.display.description) 
     .map((item) => (
-      <Combobox.Option value={item.display.label.value} key={item.id}>
+      <Combobox.Option 
+        key={item.id}
+        value={{
+          id: item.id,
+          name: item.label
+        }}
+      >
         <div style={{ margin: 5 }}>
           <h4 style={{ margin: 0 }}>
-            {item.display.label.value}
+            {item.label}
           </h4>
           <p style={{ margin: 0 }}>
             {item.display.description.value}
@@ -61,7 +68,7 @@ const SearchBar = () => {
     <Affix position={{ top: 20, left: 20 }}>
       <Combobox
         onOptionSubmit={(optionValue) => {
-          setValue(optionValue)
+          setValue(optionValue.name)
           setMainArticle(optionValue)
           combobox.closeDropdown()
         }}

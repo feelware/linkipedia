@@ -16,7 +16,8 @@ const Graph = () => {
         graphData={graphData}
         width={width}
         onNodeClick={handleNodeClick}
-        nodeLabel={'id'}
+        nodeColor={() => '#707070'}
+        linkColor={() => '#bbbbbb'}
       />
     </>
   )

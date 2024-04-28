@@ -19,12 +19,13 @@ const searchArticles = async (search, signal) => {
   return res.data.search
 }
 
-const getArticle = async (id) => {
+const getProperties = async (id) => {
+  console.log(getUrl(id))
   const res = await axios.get(getUrl(id), { headers })
-  return res.data.entities[id]
+  return res.data.entities[id].claims
 }
 
 export default {
   searchArticles,
-  getArticle
+  getProperties
 }
