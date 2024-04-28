@@ -30,6 +30,8 @@ const useData = create((set) => ({
     const links = []
     const nodeMap = new Map()
 
+    set({ graphData: { nodes, links }, mainArticle, nodeMap })
+
     for (const prop of filteredProperties) {
       const propertyId = prop[0].mainsnak.property
   
@@ -48,6 +50,8 @@ const useData = create((set) => ({
         source: mainArticle.id,
         target: propertyId
       })
+
+      set({ graphData: { nodes, links }, mainArticle, nodeMap })
   
       for (const value of prop) {
         const valueId = value.mainsnak.datavalue.value.id
@@ -68,17 +72,12 @@ const useData = create((set) => ({
           source: propertyId,
           target: valueId
         })
+
+        set({ graphData: { nodes, links }, mainArticle, nodeMap })
       }
-      
     }
 
-    const graphData = { nodes, links }
-
-    set({ 
-      graphData, 
-      mainArticle,
-      nodeMap
-    })
+    // set({ graphData, mainArticle, nodeMap })
   }
 }))
 
