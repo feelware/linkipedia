@@ -3,11 +3,16 @@ import useData from '../../store/useData'
 import { useViewportSize } from '@mantine/hooks'
 
 const Graph = () => {
-  const { graphData, generateRelations } = useData()
+  const { graphData, generateRelations, fetch } = useData()
   const { width } = useViewportSize()
 
   const handleNodeClick = (node) => {
-    console.log(node)
+    if (fetch === 'loading') {
+      return
+    }
+    if (node.property) {
+      return
+    }
     generateRelations(node)
   }
 
