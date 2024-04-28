@@ -30,7 +30,8 @@ const useData = create((set) => ({
     filteredProperties.forEach(prop => {
       nodes.push({
         id: prop[0].mainsnak.property,
-        name: prop[0].mainsnak.property
+        name: prop[0].mainsnak.property,
+        nodeVisibility: false
       })
       links.push({
         source: mainArticle.id,
