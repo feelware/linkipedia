@@ -12,11 +12,11 @@ const useData = create((set) => ({
   mainArticle: '',
 
   setMainArticle: async (mainArticle) => {
-    const allProperties = await wikiData.getProperties(mainArticle.id)
+    const allProperties = await wikiData.getEntity(mainArticle.id, ['claims'])
 
-    const filteredProperties = Object.values(allProperties)
+    const filteredProperties = Object.values(allProperties.claims)
       .filter(prop => 
-        prop.every(value => 
+        prop.every(value =>   
           value.mainsnak?.datatype === 'wikibase-item' 
           && value.mainsnak.datavalue
         )
@@ -30,42 +30,47 @@ const useData = create((set) => ({
     const links = []
     const nodeMap = new Map()
 
-    filteredProperties.forEach(prop => {
+    for (const prop of filteredProperties) {
       const propertyId = prop[0].mainsnak.property
-
-      const propertyNode = {
-        id: propertyId,
-        name: propertyId,
-        nodeVisibility: false
+  
+      if (!(nodeMap.has(propertyId))) {
+        const propertyNode = {
+          id: propertyId,
+          name: propertyId,
+          nodeVisibility: false
+        }
+  
+        nodes.push(propertyNode)
+        nodeMap.set(propertyId, propertyNode)
       }
-
-      nodes.push(propertyNode)
-      nodeMap.set(propertyId, propertyNode)
-
+      
       links.push({
         source: mainArticle.id,
         target: propertyId
       })
-
-      prop.forEach(value => {
+  
+      for (const value of prop) {
         const valueId = value.mainsnak.datavalue.value.id
 
+        const valueInfo = await wikiData.getEntity(valueId, ['labels'])
+  
         if (!(nodeMap.has(valueId))) {
           const valueNode = {
             id: valueId,
-            name: valueId
+            name: valueInfo.labels.en.value,
           }
   
           nodes.push(valueNode)
           nodeMap.set(valueId, valueNode)
         }
-
+  
         links.push({
           source: propertyId,
           target: valueId
         })
-      })
-    })
+      }
+      
+    }
 
     const graphData = { nodes, links }
 

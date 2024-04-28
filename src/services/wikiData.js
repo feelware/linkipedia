@@ -10,8 +10,9 @@ const searchUrl = (search) => baseUrl
   + '&continue=0'
   + `&search=${search}`
 
-const getUrl = (id) => baseUrl
+const getEntityUrl = (id, props) => baseUrl
   + '&action=wbgetentities'
+  + (props && `&props=${props.join('|')}`)
   + `&ids=${id}`
 
 const searchArticles = async (search, signal) => {
@@ -19,12 +20,12 @@ const searchArticles = async (search, signal) => {
   return res.data.search
 }
 
-const getProperties = async (id) => {
-  const res = await axios.get(getUrl(id), { headers })
-  return res.data.entities[id].claims
+const getEntity = async (id, props) => {
+  const res = await axios.get(getEntityUrl(id, props), { headers })
+  return res.data.entities[id]
 }
 
 export default {
   searchArticles,
-  getProperties
+  getEntity
 }
