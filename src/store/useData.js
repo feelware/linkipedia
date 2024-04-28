@@ -36,10 +36,12 @@ const useData = create((set) => ({
       const propertyId = prop[0].mainsnak.property
   
       if (!(nodeMap.has(propertyId))) {
+        const propertyInfo = await wikiData.getEntity(propertyId, ['labels'])
+
         const propertyNode = {
           id: propertyId,
-          name: propertyId,
-          nodeVisibility: false
+          name: propertyInfo.labels.en.value,
+          property: true
         }
   
         nodes.push(propertyNode)
@@ -56,9 +58,9 @@ const useData = create((set) => ({
       for (const value of prop) {
         const valueId = value.mainsnak.datavalue.value.id
 
-        const valueInfo = await wikiData.getEntity(valueId, ['labels'])
-  
         if (!(nodeMap.has(valueId))) {
+          const valueInfo = await wikiData.getEntity(valueId, ['labels'])
+
           const valueNode = {
             id: valueId,
             name: valueInfo.labels.en.value,

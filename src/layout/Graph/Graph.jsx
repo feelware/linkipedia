@@ -6,9 +6,13 @@ const Graph = () => {
   const { graphData } = useData()
   const { width } = useViewportSize()
 
-  const handleNodeClick = (id) => {
-    console.log(id)
+  const handleNodeClick = (node) => {
+    console.log(node)
   }
+
+  const assignNodeColor = ({ property }) => property ? '#bbbbbb' : '#707070'
+
+  const assignNodeVal = ({ property }) => property ? 0.25 : 1.5
 
   return (
     <>
@@ -16,8 +20,8 @@ const Graph = () => {
         graphData={graphData}
         width={width}
         onNodeClick={handleNodeClick}
-        nodeVisibility={({ nodeVisibility }) => nodeVisibility != false}
-        nodeColor={() => '#707070'}
+        nodeColor={assignNodeColor}
+        nodeVal={assignNodeVal}
         linkColor={() => '#bbbbbb'}
       />
     </>
