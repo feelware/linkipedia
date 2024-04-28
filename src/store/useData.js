@@ -21,13 +21,112 @@ const useData = create((set) => ({
   nodeMap: new Map(),
   fetch: 'idle',
 
+  generateRelations: async (parent) => {
+    try {
+      const nodes = []
+      const links = []
+      const nodeMap = new Map()
+
+      set((state) => {
+        state.graphData.nodes.forEach(node => nodes.push(node))
+        state.graphData.links.forEach(link => links.push(link))
+        state.nodeMap.forEach((value, key) => nodeMap.set(key, value))
+        return { graphData: { nodes, links }, nodeMap, fetch: 'loading' }
+      })
+
+      const allProperties = await wikidata.getEntity(parent.id, ['claims'])
+
+      const filteredProperties = Object.values(allProperties.claims)
+        .filter(prop =>
+          blacklist.every(b => b != prop[0].mainsnak.property) &&
+          prop.every(value =>
+            value.mainsnak?.datatype === 'wikibase-item' 
+            && value.mainsnak.datavalue
+          )
+        )
+        // .sort((a, b) =>
+        //   // sort by property number
+        //   a[0].mainsnak.property.substring(1) - b[0].mainsnak.property.substring(1)
+        // )
+
+        for (const prop of filteredProperties) {
+          const propertyId = prop[0].mainsnak.property
+      
+          if (!(nodeMap.has(propertyId))) {
+            const propertyInfo = await wikidata.getEntity(propertyId, ['labels'])
+  
+            const propertyNode = {
+              id: propertyId,
+              name: propertyInfo.labels.en.value,
+              property: true
+            }
+      
+            nodes.push(propertyNode)
+            nodeMap.set(propertyId, propertyNode)
+          }
+          
+          links.push({
+            source: parent.id,
+            target: propertyId
+          })
+  
+          set({ graphData: { nodes, links }, parent, nodeMap })
+      
+          for (const value of prop) {
+            const valueId = value.mainsnak.datavalue.value.id
+  
+            if (!(nodeMap.has(valueId))) {
+              const valueInfo = await wikidata.getEntity(valueId, ['labels'])
+  
+              const valueNode = {
+                id: valueId,
+                name: valueInfo.labels.en.value,
+              }
+      
+              nodes.push(valueNode)
+              nodeMap.set(valueId, valueNode)
+            }
+      
+            links.push({
+              source: propertyId,
+              target: valueId
+            })
+  
+            set({ graphData: { nodes, links }, parent, nodeMap })
+          }
+        }
+  
+        set({ fetch: 'success' })
+  
+        setTimeout(() => {
+          set({ fetch: 'idle' })
+        }, 5000)
+    } catch (error) {
+      console.error(error)
+      if (error.code === 'ERR_NETWORK') {
+        set({ fetch: 'network-error' })
+
+        setTimeout(() => {
+          set({ fetch: 'idle' })
+        }, 5000);
+      }
+      else {
+        set({ fetch: error.name })
+
+        setTimeout(() => {
+          set({ fetch: 'idle' })
+        }, 5000);
+      }
+    }
+  },
+
   setMainArticle: async (mainArticle) => {
     try {
       const nodes = [mainArticle]
       const links = []
       const nodeMap = new Map()
       
-      set({ 
+      set({
         graphData: { nodes, links }, 
         mainArticle, 
         nodeMap,
@@ -100,7 +199,7 @@ const useData = create((set) => ({
 
       setTimeout(() => {
         set({ fetch: 'idle' })
-      }, 5000);
+      }, 5000)
     } catch (error) {
       console.error(error)
       if (error.code === 'ERR_NETWORK') {
@@ -108,7 +207,14 @@ const useData = create((set) => ({
 
         setTimeout(() => {
           set({ fetch: 'idle' })
-        }, 5000);
+        }, 5000)
+      }
+      else {
+        set({ fetch: error.name })
+
+        setTimeout(() => {
+          set({ fetch: 'idle' })
+        }, 5000)
       }
     }
   }
