@@ -18,7 +18,7 @@ const Notif = () => {
             icon={fetch === 'success' && checkIcon}
             style={{ width: '5cm', ...transitionStyles }}
           >
-            {fetch}
+            {fetch !== 'idle' && fetch}
           </Notification>
         )}
       </Transition>
