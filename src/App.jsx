@@ -1,5 +1,6 @@
 import Graph from './layout/Graph'
-import SearchBar from './layout/SearchBar'
+import SearchBar from './components/SearchBar'
+import Notif from './components/Notif'
 
 const App = () => {
 
@@ -7,6 +8,7 @@ const App = () => {
     <>
       <SearchBar />
       <Graph />
+      <Notif />
     </>
   )
 }

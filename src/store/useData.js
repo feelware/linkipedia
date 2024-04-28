@@ -1,36 +1,51 @@
 import { create } from "zustand"
 import wikiData from "../services/wikiData"
 
+const blacklist = [
+  'P2184',  // history of topic
+  'P5008',  // on focus list of Wikimedia project
+  'P6104',  // maintained by WikiProject
+  'P373',   // Commons category
+  'P1151',  // topic's main Wikimedia portal
+  'P1424',  // topic's main template
+  'P910',   // topic's main category
+]
+
 const useData = create((set) => ({
   graphData: {
     nodes: [],
     links: []
   },
-
-  nodeMap: new Map(),
-
   mainArticle: '',
+  nodeMap: new Map(),
+  fetch: 'idle',
 
   setMainArticle: async (mainArticle) => {
+    const nodes = [mainArticle]
+    const links = []
+    const nodeMap = new Map()
+    
+    set({ 
+      graphData: { nodes, links }, 
+      mainArticle, 
+      nodeMap,
+      fetch: 'loading' 
+    })
+
     const allProperties = await wikiData.getEntity(mainArticle.id, ['claims'])
 
     const filteredProperties = Object.values(allProperties.claims)
-      .filter(prop => 
-        prop.every(value =>   
+      .filter(prop =>
+        blacklist.every(b => b != prop[0].mainsnak.property) &&
+        prop.every(value =>
           value.mainsnak?.datatype === 'wikibase-item' 
           && value.mainsnak.datavalue
         )
       )
-      .sort((a, b) =>
-        // sort by property number
-        a[0].mainsnak.property.substring(1) - b[0].mainsnak.property.substring(1)
-      )
-      
-    const nodes = [mainArticle]
-    const links = []
-    const nodeMap = new Map()
-
-    set({ graphData: { nodes, links }, mainArticle, nodeMap })
+      // .sort((a, b) =>
+      //   // sort by property number
+      //   a[0].mainsnak.property.substring(1) - b[0].mainsnak.property.substring(1)
+      // )
 
     for (const prop of filteredProperties) {
       const propertyId = prop[0].mainsnak.property
@@ -79,7 +94,11 @@ const useData = create((set) => ({
       }
     }
 
-    // set({ graphData, mainArticle, nodeMap })
+    set({ fetch: 'success' })
+
+    setTimeout(() => {
+      set({ fetch: 'idle' })
+    }, 5000);
   }
 }))
 
