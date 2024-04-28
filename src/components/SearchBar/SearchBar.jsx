@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { useDebouncedValue } from '@mantine/hooks'
 import { Affix, Combobox, Loader, TextInput, useCombobox } from "@mantine/core"
 import useData from "../../store/useData"
-import wikiData from "../../services/wikiData"
+import wikidata from "../../services/wikidata"
 
 const SearchBar = () => {
   const { mainArticle, setMainArticle } = useData()
@@ -27,7 +27,7 @@ const SearchBar = () => {
     abortController.current = new AbortController()
     setLoading(true)
     try {
-      const result = await wikiData.searchArticles(query, abortController.current.signal)
+      const result = await wikidata.searchArticles(query, abortController.current.signal)
       // console.log(result)
       setData(result)
       setLoading(false)
