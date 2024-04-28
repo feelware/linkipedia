@@ -7,6 +7,8 @@ const useData = create((set) => ({
     links: []
   },
 
+  nodeMap: new Map(),
+
   mainArticle: '',
 
   setMainArticle: async (mainArticle) => {
@@ -26,34 +28,52 @@ const useData = create((set) => ({
       
     const nodes = [mainArticle]
     const links = []
+    const nodeMap = new Map()
 
     filteredProperties.forEach(prop => {
-      nodes.push({
-        id: prop[0].mainsnak.property,
-        name: prop[0].mainsnak.property,
+      const propertyId = prop[0].mainsnak.property
+
+      const propertyNode = {
+        id: propertyId,
+        name: propertyId,
         nodeVisibility: false
-      })
+      }
+
+      nodes.push(propertyNode)
+      nodeMap.set(propertyId, propertyNode)
+
       links.push({
         source: mainArticle.id,
-        target: prop[0].mainsnak.property
+        target: propertyId
       })
 
       prop.forEach(value => {
-        nodes.push({
-          id: value.mainsnak.datavalue.value.id,
-          name: value.mainsnak.datavalue.value.id
-        })
+        const valueId = value.mainsnak.datavalue.value.id
+
+        if (!(nodeMap.has(valueId))) {
+          const valueNode = {
+            id: valueId,
+            name: valueId
+          }
+  
+          nodes.push(valueNode)
+          nodeMap.set(valueId, valueNode)
+        }
+
         links.push({
-          source: value.mainsnak.property,
-          target: value.mainsnak.datavalue.value.id
+          source: propertyId,
+          target: valueId
         })
       })
     })
 
     const graphData = { nodes, links }
 
-    console.log(filteredProperties)
-    set({ graphData, mainArticle })
+    set({ 
+      graphData, 
+      mainArticle,
+      nodeMap
+    })
   }
 }))
 

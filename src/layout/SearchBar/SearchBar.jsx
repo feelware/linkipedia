@@ -28,12 +28,14 @@ const SearchBar = () => {
     setLoading(true)
     try {
       const result = await wikiData.searchArticles(query, abortController.current.signal)
-      console.log(result)
+      // console.log(result)
       setData(result)
       setLoading(false)
       setEmpty(result.length === 0)
     } catch (error) {
-      console.log(error.name) 
+      if (error.name != 'CanceledError') {
+        console.error(error)
+      }
       return
     }
     abortController.current = undefined

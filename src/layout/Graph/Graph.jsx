@@ -16,7 +16,7 @@ const Graph = () => {
         graphData={graphData}
         width={width}
         onNodeClick={handleNodeClick}
-        nodeVisibility={(node) => node.nodeVisibility != false}
+        nodeVisibility={({ nodeVisibility }) => nodeVisibility != false}
         nodeColor={() => '#707070'}
         linkColor={() => '#bbbbbb'}
       />

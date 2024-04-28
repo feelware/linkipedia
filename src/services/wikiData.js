@@ -20,7 +20,6 @@ const searchArticles = async (search, signal) => {
 }
 
 const getProperties = async (id) => {
-  console.log(getUrl(id))
   const res = await axios.get(getUrl(id), { headers })
   return res.data.entities[id].claims
 }
