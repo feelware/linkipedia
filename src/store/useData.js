@@ -40,7 +40,7 @@ const useData = create((set) => ({
         .filter(prop =>
           blacklist.every(b => b != prop[0].mainsnak.property) &&
           prop.every(value =>
-            value.mainsnak?.datatype === 'wikibase-item' 
+            value.mainsnak?.datatype === 'wikibase-item'
             && value.mainsnak.datavalue
           )
         )
@@ -50,10 +50,14 @@ const useData = create((set) => ({
         // )
 
         for (const prop of filteredProperties) {
-          const propertyId = prop[0].mainsnak.property
-      
+          const propertyId = `${parent.id}:${prop[0].mainsnak.property}`
+          
+          // TODO: allow property nodes to be "duplicated"
+          // namely, the same property for different items should be different nodes
+          // make property node ids unique by appending the item id
+
           if (!(nodeMap.has(propertyId))) {
-            const propertyInfo = await wikidata.getEntity(propertyId, ['labels'])
+            const propertyInfo = await wikidata.getEntity(prop[0].mainsnak.property, ['labels'])
   
             const propertyNode = {
               id: propertyId,
@@ -149,10 +153,10 @@ const useData = create((set) => ({
         // )
 
       for (const prop of filteredProperties) {
-        const propertyId = prop[0].mainsnak.property
+        const propertyId = `${mainArticle.id}:${prop[0].mainsnak.property}`
     
         if (!(nodeMap.has(propertyId))) {
-          const propertyInfo = await wikidata.getEntity(propertyId, ['labels'])
+          const propertyInfo = await wikidata.getEntity(prop[0].mainsnak.property, ['labels'])
 
           const propertyNode = {
             id: propertyId,
