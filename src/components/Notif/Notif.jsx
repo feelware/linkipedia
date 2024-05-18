@@ -9,7 +9,7 @@ const Notif = () => {
   return (
     <Affix position={{ bottom: 20, right: 20 }}>
       <Transition 
-        mounted={fetchState !== 'idle'}
+        mounted={fetchState}
         transition="fade-left"
       >
         {transitionStyles => (
@@ -18,7 +18,7 @@ const Notif = () => {
             icon={fetchState === 'success' && checkIcon}
             style={{ width: '5cm', ...transitionStyles }}
           >
-            {fetchState !== 'idle' && fetchState}
+            {fetchState}
           </Notification>
         )}
       </Transition>
