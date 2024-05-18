@@ -3,22 +3,22 @@ import useData from '../../store/useData'
 import { useViewportSize } from '@mantine/hooks'
 
 const Graph = () => {
-  const { graphData, generateRelations, fetch } = useData()
+  const { graphData, expandItem, fetchState } = useData()
   const { width } = useViewportSize()
 
   const handleNodeClick = (node) => {
-    if (fetch === 'loading') {
+    if (fetchState === 'loading') {
       return
     }
-    if (node.property) {
+    if (node.isProperty) {
       return
     }
-    generateRelations(node)
+    expandItem(node)
   }
 
-  const assignNodeColor = ({ property }) => property ? '#bbbbbb' : '#707070'
+  const assignNodeColor = ({ isProperty }) => isProperty ? '#bbbbbb' : '#707070'
 
-  const assignNodeVal = ({ property }) => property ? 0.25 : 1.5
+  const assignNodeVal = ({ isProperty }) => isProperty ? 0.25 : 1.5
 
   return (
     <>

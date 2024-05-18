@@ -5,10 +5,10 @@ import useData from "../../store/useData"
 import wikidata from "../../services/wikidata"
 
 const SearchBar = () => {
-  const { mainArticle, setMainArticle } = useData()
+  const { expandItem } = useData()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState(null)
-  const [value, setValue] = useState(mainArticle)
+  const [value, setValue] = useState('')
   const [empty, setEmpty] = useState(false)
   const abortController = useRef()
 
@@ -18,7 +18,7 @@ const SearchBar = () => {
 
   const [debounced] = useDebouncedValue(value, 500)
 
-  const fetchOptions = async (query) => {
+  const fetchStateOptions = async (query) => {
     if (query == '') {
       setData(null)
       return
@@ -42,11 +42,11 @@ const SearchBar = () => {
   }
 
   useEffect(() => {
-    fetchOptions(debounced)
+    fetchStateOptions(debounced)
   }, [debounced])
 
   const options = (data || [])
-    .filter((item) => item.display.description) 
+    .filter((item) => item.display.description)
     .map((item) => (
       <Combobox.Option 
         key={item.id}
@@ -69,9 +69,9 @@ const SearchBar = () => {
   return (
     <Affix position={{ top: 20, left: 20 }}>
       <Combobox
-        onOptionSubmit={(optionValue) => {
-          setValue(optionValue.name)
-          setMainArticle(optionValue)
+        onOptionSubmit={(newRoot) => {
+          setValue(newRoot.name)
+          expandItem(newRoot)
           combobox.closeDropdown()
         }}
         withinPortal={false}

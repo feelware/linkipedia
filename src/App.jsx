@@ -3,7 +3,6 @@ import SearchBar from './components/SearchBar'
 import Notif from './components/Notif'
 
 const App = () => {
-
   return (
     <>
       <SearchBar />
