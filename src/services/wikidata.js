@@ -54,16 +54,6 @@ const searchArticles = async (search, signal) => {
   return res.data.search
 }
 
-const getEntity = async (id, props) => {
-  const url = wikidata_base_url
-  + '&languages=en'
-  + '&action=wbgetentities'
-  + (props && `&props=${props.join('|')}`)
-  + `&ids=${id}`
-  const res = await axios.get(url, { headers })
-  return res.data.entities[id]
-}
-
 const getBindingsOf = async (itemId) => {
   const url = sparql_base_url + '?query=' + makeQueryFor(itemId)
   const res = await axios.get(url, {
@@ -87,6 +77,5 @@ const getBindingsOf = async (itemId) => {
 
 export default {
   searchArticles,
-  getEntity,
   getBindingsOf
 }
