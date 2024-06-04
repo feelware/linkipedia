@@ -49,6 +49,7 @@ const searchArticles = async (search, signal) => {
   + '&action=wbsearchentities'
   + '&type=item'
   + '&continue=0'
+  + '&limit=8'
   + `&search=${search}`
   const res = await axios.get(url, { signal, headers })
   return res.data.search

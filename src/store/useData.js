@@ -72,6 +72,14 @@ const useData = create((set, get) => ({
       set({ fetchState: error.message })
     }
   },
+  resetGraph: () => {
+    set({ 
+      graphData: { nodes: [], links: [] },
+      expandedItems: [],
+      nodeMap: new Map(),
+      fetchState: null
+    })
+  }
 }))
 
 export default useData
