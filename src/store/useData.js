@@ -1,5 +1,7 @@
 import { create } from "zustand"
 import wikidata from "../services/wikidata"
+import randomColor from "randomcolor"
+import Color from "color"
 
 const useData = create((set, get) => ({
   graphData: {
@@ -22,6 +24,11 @@ const useData = create((set, get) => ({
       if (expandedItems.includes(root)) {
         return
       }
+      const rootColor = randomColor({ luminosity: 'dark'})
+      root.__color = rootColor
+      const childColor = Color(rootColor).lighten(0.7).hex()
+      // console.log(childColor)
+      // console.log(root)
       expandedItems.push(root)
       state.graphData.nodes.forEach(node => nodes.push(node))
       state.graphData.links.forEach(link => links.push(link))
@@ -47,6 +54,7 @@ const useData = create((set, get) => ({
         }
 
         if (!(nodeMap.has(item.id))) {
+          item.__color = childColor
           nodes.push(item)
           nodeMap.set(item.id, item)
         }
