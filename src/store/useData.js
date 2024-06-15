@@ -27,8 +27,6 @@ const useData = create((set, get) => ({
       const rootColor = randomColor({ luminosity: 'dark'})
       root.__color = rootColor
       const childColor = Color(rootColor).lighten(0.7).hex()
-      // console.log(childColor)
-      // console.log(root)
       expandedItems.push(root)
       state.graphData.nodes.forEach(node => nodes.push(node))
       state.graphData.links.forEach(link => links.push(link))
