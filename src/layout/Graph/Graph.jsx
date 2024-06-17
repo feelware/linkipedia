@@ -16,7 +16,7 @@ const Graph = () => {
     expandItem(node)
   }
 
-  const assignNodeColor = ({ isProperty }) => isProperty ? '#bbbbbb' : '#707070'
+  const assignNodeColor = ({ isProperty, __color }) => isProperty ? '#bbbbbb' : __color
 
   const assignNodeVal = ({ isProperty }) => isProperty ? 0.25 : 1.5
 
