@@ -3,7 +3,7 @@ import useData from '../../store/useData'
 import { useViewportSize } from '@mantine/hooks'
 
 const Graph = () => {
-  const { graphData, expandItem, fetchState } = useData()
+  const { graphData, expandItem, fetchState, expandedItems } = useData()
   const { width } = useViewportSize()
 
   const handleNodeClick = (node) => {
@@ -16,7 +16,13 @@ const Graph = () => {
     expandItem(node)
   }
 
-  const assignNodeColor = ({ isProperty, __color }) => isProperty ? '#bbbbbb' : __color
+  const assignNodeColor = (node) => {
+    const luminence =  expandedItems.includes(node) ? 50 : 80
+    if (node.isProperty) {
+      return '#bbbbbb'
+    }
+    return `hsl(${node.__hue}, 70%, ${luminence}%)`
+  }
 
   const assignNodeVal = ({ isProperty }) => isProperty ? 0.25 : 1.5
 
