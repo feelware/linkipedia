@@ -2,6 +2,7 @@ import Graph from './layout/Graph'
 import SearchBar from './components/SearchBar'
 import Notif from './components/Notif'
 import ResetButton from './components/ResetButton'
+import ColorTheme from './components/ColorTheme/ColorTheme'
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
       <ResetButton />
       <Graph />
       <Notif />
+      <ColorTheme/>
     </>
   )
 }
