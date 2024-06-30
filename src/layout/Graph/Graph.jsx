@@ -1,7 +1,6 @@
 import {
   useComputedColorScheme,
   useMantineTheme,
-  Popover,
 } from '@mantine/core'
 
 import { useViewportSize } from '@mantine/hooks'
@@ -9,14 +8,20 @@ import { useViewportSize } from '@mantine/hooks'
 import ForceGraph2D from 'react-force-graph-2d'
 
 import useData from '../../store/useData'
+import useActiveNode from '../../store/useActiveNode'
 
 const Graph = () => {
-  const { graphData, expandItem, fetchState, expandedItems } = useData()
+  const { graphData, expandItem, expandedItems } = useData()
+  const {
+    activeNode,
+    setActiveNode,
+    clearActiveNode
+  } = useActiveNode()
   const { width } = useViewportSize()
-  const computedColorScheme = useComputedColorScheme('light')
+  const isThemeDark = useComputedColorScheme('light') === 'dark'
   const theme = useMantineTheme()
 
-  const isThemeDark = computedColorScheme === 'dark'
+  console.log(activeNode)
 
   const assignLinkColor = () => isThemeDark
     ? theme.colors.dark[5]
@@ -35,23 +40,23 @@ const Graph = () => {
     return `hsl(${node.__hue}, ${saturation}%, ${luminance}%)`
   }
 
-  const assignNodeVal = ({ isProperty }) => isProperty 
-    ? 0.25 
-    : 1.5
+  const assignNodeVal = ({ size, isProperty }) => isProperty 
+    ? 0.1 
+    : size
 
   const handleNodeClick = (node) => {
-    if (fetchState === 'loading') {
-      return
+    if (!node.isProperty) {
+      expandItem(node)
     }
-    if (node.isProperty) {
-      return
-    }
-    expandItem(node)
-    console.log(node.x, node.y)
+    // if (activeNode?.id === node.id) {
+    //   clearActiveNode()
+    //   return
+    // }
+    // setActiveNode(node)
   }
 
   const assignArrowLength = (link) => (
-    link.rootToProperty ? 0 : 4
+    link.rootToProperty ? 0 : 5
   )
 
   return (
@@ -66,6 +71,8 @@ const Graph = () => {
         linkDirectionalArrowLength={assignArrowLength}
         linkDirectionalParticleWidth={1}
         linkDirectionalArrowRelPos={1}
+        // dagMode='td'
+        // dagLevelDistance={50}
       />
     </>
   )

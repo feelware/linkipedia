@@ -29,6 +29,7 @@ const useData = create((set, get) => ({
       state.graphData.links.forEach(link => links.push(link))
       const nodeMap = new Map(state.nodeMap)
       
+      root.size = 0
       if (!(nodeMap.has(root.id))) {
         nodes.push(root)
         nodeMap.set(root.id, root)
@@ -66,6 +67,8 @@ const useData = create((set, get) => ({
           source: property.id,
           target: item.id
         })
+
+        root.size += 1
       })
 
       set({ 
