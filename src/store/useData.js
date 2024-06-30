@@ -12,22 +12,22 @@ const useData = create((set, get) => ({
 
   expandItem: async (root) => {
     try {
-      const nodes = []
-      const links = []
-      const nodeMap = new Map()
-      const expandedItems = []
-
       const state = get()
-      state.expandedItems.forEach(item => expandedItems.push(item))
-      if (expandedItems.includes(root)) {
+      if (state.expandedItems.includes(root)) {
         return
       }
+
+      const expandedItems = []
+      state.expandedItems.forEach(expandedItem => expandedItems.push(expandedItem))
       const rootHue = Math.floor(Math.random() * 360)
       root.__hue = rootHue
       expandedItems.push(root)
+      
+      const nodes = []
+      const links = []
       state.graphData.nodes.forEach(node => nodes.push(node))
       state.graphData.links.forEach(link => links.push(link))
-      state.nodeMap.forEach((value, key) => nodeMap.set(key, value))
+      const nodeMap = new Map(state.nodeMap)
       
       if (!(nodeMap.has(root.id))) {
         nodes.push(root)
@@ -82,6 +82,7 @@ const useData = create((set, get) => ({
       set({ fetchState: error.message })
     }
   },
+
   resetGraph: () => {
     set({ 
       graphData: { nodes: [], links: [] },

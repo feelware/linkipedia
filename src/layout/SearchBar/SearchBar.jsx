@@ -4,7 +4,9 @@ import { Affix, Combobox, Loader, TextInput, useCombobox } from "@mantine/core"
 import useData from "../../store/useData"
 import wikidata from "../../services/wikidata"
 
-const SearchBar = () => {
+import PropTypes from 'prop-types'
+
+const SearchBar = ({ position }) => {
   const { expandItem } = useData()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState(null)
@@ -67,18 +69,19 @@ const SearchBar = () => {
     ))
 
   return (
-    <Affix position={{ top: 20, left: 20 }}>
-      <Combobox
-        onOptionSubmit={(newRoot) => {
-          setValue(newRoot.name)
-          expandItem(newRoot)
-          combobox.closeDropdown()
-        }}
-        withinPortal={false}
-        store={combobox}
-      >
-        <Combobox.Target>
+    <Combobox
+      onOptionSubmit={(newRoot) => {
+        setValue(newRoot.name)
+        expandItem(newRoot)
+        combobox.closeDropdown()
+      }}
+      withinPortal={false}
+      store={combobox}
+    >
+      <Combobox.Target>
+        <Affix position={position}>
           <TextInput
+            w={250}
             placeholder="Search an article"
             value={value}
             onChange={(event) => {
@@ -95,18 +98,25 @@ const SearchBar = () => {
             onFocus={() => combobox.openDropdown()}
             onBlur={() => combobox.closeDropdown()}
             rightSection={loading && <Loader size={18} /> }
+            styles={{
+              input: { height: 40 }
+            }}
           />
-        </Combobox.Target>
+        </Affix>
+      </Combobox.Target>
 
-        <Combobox.Dropdown hidden={data === null}>
-          <Combobox.Options mah={450} style={{ overflowY: 'auto' }}>
-            {options}
-            {empty && <Combobox.Empty>No results</Combobox.Empty>}
-          </Combobox.Options>
-        </Combobox.Dropdown>
-      </Combobox>
-    </Affix>
+      <Combobox.Dropdown hidden={data === null}>
+        <Combobox.Options mah={450} style={{ overflowY: 'auto' }}>
+          {options}
+          {empty && <Combobox.Empty>No results</Combobox.Empty>}
+        </Combobox.Options>
+      </Combobox.Dropdown>
+    </Combobox>
   )
 }
 
 export default SearchBar
+
+SearchBar.propTypes = {
+  position: PropTypes.object
+}

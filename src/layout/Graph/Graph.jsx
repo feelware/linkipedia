@@ -1,10 +1,37 @@
 import ForceGraph2D from 'react-force-graph-2d'
 import useData from '../../store/useData'
 import { useViewportSize } from '@mantine/hooks'
+import { 
+  useComputedColorScheme,
+  useMantineTheme 
+} from '@mantine/core'
 
 const Graph = () => {
   const { graphData, expandItem, fetchState, expandedItems } = useData()
   const { width } = useViewportSize()
+  const computedColorScheme = useComputedColorScheme('light')
+  const theme = useMantineTheme()
+
+  const assignLinkColor = () => computedColorScheme === 'light'
+    ? theme.colors.dark[1]
+    : theme.colors.dark[5]
+
+  const assignNodeColor = (node) => {
+    if (node.isProperty) {
+      return assignLinkColor()
+    }
+    let luminance = 65
+    let saturation = 85
+    if (expandedItems.includes(node)) {
+      luminance = 85
+      saturation = 80
+    }
+    return `hsl(${node.__hue}, ${saturation}%, ${luminance}%)`
+  }
+
+  const assignNodeVal = ({ isProperty }) => isProperty 
+    ? 0.25 
+    : 1.5
 
   const handleNodeClick = (node) => {
     if (fetchState === 'loading') {
@@ -16,16 +43,6 @@ const Graph = () => {
     expandItem(node)
   }
 
-  const assignNodeColor = (node) => {
-    const luminence =  expandedItems.includes(node) ? 50 : 80
-    if (node.isProperty) {
-      return '#bbbbbb'
-    }
-    return `hsl(${node.__hue}, 70%, ${luminence}%)`
-  }
-
-  const assignNodeVal = ({ isProperty }) => isProperty ? 0.25 : 1.5
-
   return (
     <>
       <ForceGraph2D 
@@ -34,7 +51,7 @@ const Graph = () => {
         onNodeClick={handleNodeClick}
         nodeColor={assignNodeColor}
         nodeVal={assignNodeVal}
-        linkColor={() => '#bbbbbb'}
+        linkColor={assignLinkColor}
       />
     </>
   )

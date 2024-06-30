@@ -12,7 +12,9 @@
   "dependencies": {
     "@mantine/core": "^7.8.1",
     "@mantine/hooks": "^7.8.1",
+    "@tabler/icons-react": "^3.7.0",
     "axios": "^1.6.8",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-force-graph-2d": "^1.25.4",

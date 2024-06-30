@@ -1,17 +1,27 @@
+import Menu from './layout/Menu'
+import SearchBar from './layout/SearchBar'
 import Graph from './layout/Graph'
-import SearchBar from './components/SearchBar'
-import Notif from './components/Notif'
-import ResetButton from './components/ResetButton'
-import ColorTheme from './components/ColorTheme/ColorTheme'
+import Notif from './layout/Notif'
 
 const App = () => {
   return (
     <>
-      <SearchBar />
-      <ResetButton />
+      <Menu 
+        position={{ 
+          top: 20, 
+          left: 20 
+        }} 
+      />
+      <SearchBar 
+        position={{ 
+          top: 20, 
+          right: 20 
+        }}
+      />
+
       <Graph />
+
       <Notif />
-      <ColorTheme/>
     </>
   )
 }

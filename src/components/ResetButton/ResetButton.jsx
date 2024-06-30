@@ -6,7 +6,12 @@ const ResetButton = () => {
 
   return (
     <Affix top={20} right={20}>
-      <Button color="red" onClick={resetGraph}>Reset</Button>
+      <Button 
+        variant="default" 
+        onClick={resetGraph}
+      >
+        Reset
+      </Button>
     </Affix>
   );
 };
