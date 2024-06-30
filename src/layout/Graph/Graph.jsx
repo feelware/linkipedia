@@ -1,10 +1,14 @@
-import ForceGraph2D from 'react-force-graph-2d'
-import useData from '../../store/useData'
-import { useViewportSize } from '@mantine/hooks'
-import { 
+import {
   useComputedColorScheme,
-  useMantineTheme 
+  useMantineTheme,
+  Popover,
 } from '@mantine/core'
+
+import { useViewportSize } from '@mantine/hooks'
+
+import ForceGraph2D from 'react-force-graph-2d'
+
+import useData from '../../store/useData'
 
 const Graph = () => {
   const { graphData, expandItem, fetchState, expandedItems } = useData()
@@ -12,19 +16,21 @@ const Graph = () => {
   const computedColorScheme = useComputedColorScheme('light')
   const theme = useMantineTheme()
 
-  const assignLinkColor = () => computedColorScheme === 'light'
-    ? theme.colors.dark[1]
-    : theme.colors.dark[5]
+  const isThemeDark = computedColorScheme === 'dark'
+
+  const assignLinkColor = () => isThemeDark
+    ? theme.colors.dark[5]
+    : theme.colors.dark[1]
 
   const assignNodeColor = (node) => {
     if (node.isProperty) {
       return assignLinkColor()
     }
-    let luminance = 65
-    let saturation = 85
+    let luminance = isThemeDark ? 65 : 75
+    let saturation = isThemeDark ? 85 : 100
     if (expandedItems.includes(node)) {
-      luminance = 85
-      saturation = 80
+      luminance = isThemeDark ? 85 : 60
+      saturation = isThemeDark ? 80 : 30
     }
     return `hsl(${node.__hue}, ${saturation}%, ${luminance}%)`
   }
@@ -41,7 +47,12 @@ const Graph = () => {
       return
     }
     expandItem(node)
+    console.log(node.x, node.y)
   }
+
+  const assignArrowLength = (link) => (
+    link.rootToProperty ? 0 : 4
+  )
 
   return (
     <>
@@ -52,6 +63,9 @@ const Graph = () => {
         nodeColor={assignNodeColor}
         nodeVal={assignNodeVal}
         linkColor={assignLinkColor}
+        linkDirectionalArrowLength={assignArrowLength}
+        linkDirectionalParticleWidth={1}
+        linkDirectionalArrowRelPos={1}
       />
     </>
   )

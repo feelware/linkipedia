@@ -44,7 +44,8 @@ const useData = create((set, get) => ({
   
           links.push({
             source: root.id,
-            target: property.id
+            target: property.id,
+            rootToProperty: true
           })
         }
 
