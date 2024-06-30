@@ -9,9 +9,6 @@ import {
 } from '@tabler/icons-react'
 
 import Dropdown from './Dropdown'
-import SchemeToggle from './Dropdown/SchemeToggle'
-
-import PropTypes from 'prop-types'
 
 const OptionsMenu = ({ position }) => {
   return (
@@ -31,13 +28,14 @@ const OptionsMenu = ({ position }) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Dropdown />
-        <SchemeToggle />
       </Menu.Dropdown>
     </Menu>
   )
 }
 
 export default OptionsMenu
+
+import PropTypes from 'prop-types'
 
 OptionsMenu.propTypes = {
   position: PropTypes.object

@@ -81,7 +81,7 @@ const SearchBar = ({ position }) => {
       <Combobox.Target>
         <Affix position={position}>
           <TextInput
-            w={250}
+            w={300}
             placeholder="Search an article"
             value={value}
             onChange={(event) => {
@@ -99,7 +99,11 @@ const SearchBar = ({ position }) => {
             onBlur={() => combobox.closeDropdown()}
             rightSection={loading && <Loader size={18} /> }
             styles={{
-              input: { height: 40 }
+              input: { 
+                height: 40, 
+                paddingLeft: 15,
+                paddingRight: 15,
+              }
             }}
           />
         </Affix>

@@ -1,44 +1,29 @@
 import {
-  Menu,
-  Text,
-  rem,
-  Group
-} from '@mantine/core'
-
-import {
   IconTrash
 } from '@tabler/icons-react'
 
-const iconProps = { size: rem(16) }
+import Dropdown from '../../../components/Dropdown'
+import SchemeToggle from './SchemeToggle'
 
-const Dropdown = () => {
+import useData from '../../../store/useData'
+
+const MenuDropdown = () => {
+  const { resetGraph } = useData()
+
   const options = [
     {
-      label: 'Clear canvas',
+      label: 'Reset canvas',
       Icon: IconTrash,
+      onClick: resetGraph
     }
   ]
 
   return (
     <>
-      {
-        options.map((option, i) => (
-          <Menu.Item 
-            key={i} 
-            pr={15}
-            h={40}
-          >
-            <Group gap={10} align='flex-end'>
-              <option.Icon {...iconProps} />
-              <Text size={rem(14)} >
-                {option.label}
-              </Text>
-            </Group>
-          </Menu.Item>
-        ))
-      }
+      <Dropdown options={options} />
+      <SchemeToggle />
     </>
   )
 }
 
-export default Dropdown
+export default MenuDropdown
