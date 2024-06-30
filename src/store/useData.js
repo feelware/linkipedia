@@ -29,7 +29,7 @@ const useData = create((set, get) => ({
       state.graphData.links.forEach(link => links.push(link))
       const nodeMap = new Map(state.nodeMap)
       
-      root.size = 0
+      root.children = []
       if (!(nodeMap.has(root.id))) {
         nodes.push(root)
         nodeMap.set(root.id, root)
@@ -39,15 +39,21 @@ const useData = create((set, get) => ({
       const bindings = await wikidata.getBindingsOf(root.id)
 
       bindings.forEach(({ property, item }) => {
+        let _property
         if (!(nodeMap.has(property.id))) {
           nodes.push(property)
           nodeMap.set(property.id, property)
-  
+          property.children = []
+          _property = property
+          root.children.push(property)
           links.push({
             source: root.id,
             target: property.id,
             rootToProperty: true
           })
+        }
+        else {
+          _property = nodeMap.get(property.id)
         }
 
         if (!(nodeMap.has(item.id))) {
@@ -68,8 +74,10 @@ const useData = create((set, get) => ({
           target: item.id
         })
 
-        root.size += 1
+        _property.children.push(item)
       })
+
+      root.size = Math.log10(root.children.length + 1) + 1
 
       set({ 
         graphData: { nodes, links }, 
@@ -81,6 +89,7 @@ const useData = create((set, get) => ({
       setTimeout(() => {
         set({ fetchState: null })
       }, 2500);
+
     }
     catch (error) {
       set({ fetchState: error.message })

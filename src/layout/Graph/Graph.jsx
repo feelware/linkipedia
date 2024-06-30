@@ -21,8 +21,6 @@ const Graph = () => {
   const isThemeDark = useComputedColorScheme('light') === 'dark'
   const theme = useMantineTheme()
 
-  console.log(activeNode)
-
   const assignLinkColor = () => isThemeDark
     ? theme.colors.dark[5]
     : theme.colors.dark[1]
@@ -48,11 +46,15 @@ const Graph = () => {
     if (!node.isProperty) {
       expandItem(node)
     }
-    // if (activeNode?.id === node.id) {
-    //   clearActiveNode()
-    //   return
-    // }
-    // setActiveNode(node)
+    if (activeNode?.id === node.id) {
+      clearActiveNode()
+      return
+    }
+    setActiveNode(node)
+  }
+
+  const handleNodeRightClick = (node) => {
+    expandItem(node)
   }
 
   const assignArrowLength = (link) => (
@@ -65,6 +67,7 @@ const Graph = () => {
         graphData={graphData}
         width={width}
         onNodeClick={handleNodeClick}
+        onNodeRightClick={handleNodeRightClick}
         nodeColor={assignNodeColor}
         nodeVal={assignNodeVal}
         linkColor={assignLinkColor}
