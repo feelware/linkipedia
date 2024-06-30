@@ -77,6 +77,7 @@ const SearchBar = ({ position }) => {
       }}
       withinPortal={false}
       store={combobox}
+      offset={10}
     >
       <Combobox.Target>
         <Affix position={position}>

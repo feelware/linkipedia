@@ -15,7 +15,7 @@ const App = () => {
       <SearchBar 
         position={{ 
           top: 20, 
-          right: 20 
+          left: 70 
         }}
       />
 

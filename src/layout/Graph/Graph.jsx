@@ -43,18 +43,11 @@ const Graph = () => {
     : size
 
   const handleNodeClick = (node) => {
-    if (!node.isProperty) {
-      expandItem(node)
-    }
     if (activeNode?.id === node.id) {
       clearActiveNode()
       return
     }
     setActiveNode(node)
-  }
-
-  const handleNodeRightClick = (node) => {
-    expandItem(node)
   }
 
   const assignArrowLength = (link) => (
@@ -67,7 +60,6 @@ const Graph = () => {
         graphData={graphData}
         width={width}
         onNodeClick={handleNodeClick}
-        onNodeRightClick={handleNodeRightClick}
         nodeColor={assignNodeColor}
         nodeVal={assignNodeVal}
         linkColor={assignLinkColor}
