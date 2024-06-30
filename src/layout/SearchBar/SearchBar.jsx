@@ -4,8 +4,6 @@ import { Affix, Combobox, Loader, TextInput, useCombobox } from "@mantine/core"
 import useData from "../../store/useData"
 import wikidata from "../../services/wikidata"
 
-import PropTypes from 'prop-types'
-
 const SearchBar = ({ position }) => {
   const { expandItem } = useData()
   const [loading, setLoading] = useState(false)
@@ -121,6 +119,8 @@ const SearchBar = ({ position }) => {
 }
 
 export default SearchBar
+
+import PropTypes from 'prop-types'
 
 SearchBar.propTypes = {
   position: PropTypes.object

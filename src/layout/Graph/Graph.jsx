@@ -11,7 +11,7 @@ import useData from '../../store/useData'
 import useActiveNode from '../../store/useActiveNode'
 
 const Graph = () => {
-  const { graphData, expandItem, expandedItems } = useData()
+  const { graphData, expandedItems } = useData()
   const {
     activeNode,
     setActiveNode,

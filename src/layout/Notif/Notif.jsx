@@ -2,12 +2,12 @@ import useData from "../../store/useData"
 import { Affix, Notification, Transition } from "@mantine/core"
 import { FaCheck } from "react-icons/fa6"
 
-const Notif = () => {
+const Notif = ({ position }) => {
   const { fetchState } = useData()
   const checkIcon = <FaCheck />
   
   return (
-    <Affix position={{ bottom: 20, right: 20 }}>
+    <Affix position={position}>
       <Transition 
         mounted={fetchState}
         transition="fade-left"
@@ -27,3 +27,9 @@ const Notif = () => {
 }
 
 export default Notif
+
+import PropTypes from 'prop-types'
+
+Notif.propTypes = {
+  position: PropTypes.object
+}
