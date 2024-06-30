@@ -5,7 +5,7 @@ import {
   Group
 } from '@mantine/core'
 
-const iconProps = { size: rem(16) }
+const iconProps = { size: 16 }
 
 const Dropdown = ({ options }) => {
 
