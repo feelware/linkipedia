@@ -4,10 +4,12 @@ import wikidata from "../services/wikidata"
 
 const useActiveNode = create((set) => ({
   activeNode: null,
+  attributes: null,
   articleSummary: null,
   articleImages: null,
   isFetchingSummary: false,
   setActiveNode: async (activeNode) => {
+
     set ({ activeNode, isFetchingSummary: true })
     const articleName = await wikidata.getWikipediaArticleNameOf(activeNode.id)
     if (!articleName) {
@@ -22,8 +24,6 @@ const useActiveNode = create((set) => ({
       articleSummary,
       isFetchingSummary: false 
     })
-    const articleImages = await wikipedia.images(articleName)
-    console.log(articleImages)
   },
   clearActiveNode: () => set({ 
     activeNode: null,

@@ -18,7 +18,6 @@ const Info = ({ position }) => {
   const { 
     activeNode,
     articleSummary,
-    articleImages,
     isFetchingSummary 
   } = useActiveNode()
 
@@ -55,8 +54,8 @@ const Info = ({ position }) => {
           <Card.Section h='100%'>
             <Tabs.Panel h='100%' value='summary'>
               <Article 
+                hue={activeNode.__hue}
                 summary={articleSummary}
-                images={articleImages}
                 isFetchingSummary={isFetchingSummary}
               />
             </Tabs.Panel>

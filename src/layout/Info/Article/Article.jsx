@@ -2,21 +2,27 @@ import {
   Box,
   ScrollArea,
   Title,
+  Loader,
+  Center,
+  Image,
   Text,
 } from '@mantine/core'
 
-import Images from './Images'
-
 const Article = ({ 
+  hue,
   summary,
-  images, 
   isFetchingSummary, 
 }) => {
 
   if (isFetchingSummary) {
     return (
       <>
-        <p>Loading...</p>
+        <Center h='100%'>
+          <Loader
+            color={`hsl(${hue}, 50%, 50%)`} 
+            size={40} 
+          />
+        </Center>
       </>
     )
   }
@@ -29,14 +35,13 @@ const Article = ({
     )
   }
   
-  console.log(summary)
-
   return (
     <>
       <ScrollArea h='100%'>
         <Box 
           m={20}
           mt={30}
+          mb={30}
         >
           <Title>
             {summary.title}
@@ -55,6 +60,13 @@ const Article = ({
               __html: summary.extract_html 
             }} 
           />
+
+          {
+            summary.thumbnail &&
+            <Image  
+              src={summary.thumbnail.source}
+            />
+          }
         </Box>
       </ScrollArea>
     </>
@@ -66,6 +78,7 @@ export default Article
 import propTypes from 'prop-types'
 
 Article.propTypes = {
+  hue: propTypes.number,
   summary: propTypes.object,
   images: propTypes.array,
   isFetchingSummary: propTypes.bool

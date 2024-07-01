@@ -32,8 +32,8 @@ const Graph = () => {
     let luminance = isThemeDark ? 65 : 75
     let saturation = isThemeDark ? 85 : 100
     if (expandedItems.includes(node)) {
-      luminance = isThemeDark ? 85 : 60
-      saturation = isThemeDark ? 80 : 30
+      luminance = isThemeDark ? 85 : 80
+      saturation = isThemeDark ? 80 : 60
     }
     return `hsl(${node.__hue}, ${saturation}%, ${luminance}%)`
   }
