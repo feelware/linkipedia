@@ -65,9 +65,9 @@ const Article = ({
           />
 
           {
-            summary.thumbnail &&
+            summary.originalimage &&
             <Image  
-              src={summary.thumbnail.source}
+              src={summary.originalimage.source}
             />
           }
         </Box>

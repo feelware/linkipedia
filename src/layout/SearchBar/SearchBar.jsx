@@ -103,7 +103,7 @@ const SearchBar = ({ position }) => {
                 height: 40, 
                 paddingLeft: 15,
                 paddingRight: 15,
-              }
+              },
             }}
           />
         </Affix>

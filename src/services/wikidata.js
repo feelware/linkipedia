@@ -62,7 +62,6 @@ const getBindingsOf = async (itemId) => {
     ...headers
   })
   const bindings = res.data.results.bindings
-  console.log(bindings)
   return bindings.map(p => ({
     property: {
       id: itemId + ':' + p.propId.value,

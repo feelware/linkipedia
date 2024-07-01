@@ -44,7 +44,7 @@ const useData = create((set, get) => ({
         if (!(nodeMap.has(property.id))) {
           _property = property
           _property.children = []
-          root.children.push(_property)
+          root.children.push(_property) 
           nodeMap.set(_property.id, _property)
           nodes.push(_property)
           links.push({
@@ -77,7 +77,6 @@ const useData = create((set, get) => ({
           target: item.id
         })
 
-        // console.log(item)
         _property.children.push(item)
       })
 
