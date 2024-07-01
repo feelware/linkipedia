@@ -14,7 +14,11 @@ import {
   IconBrandWikipedia
 } from '@tabler/icons-react'
 
+import { useState } from 'react'
+
 const Info = ({ position }) => {
+  const [activeTab, setActiveTab] = useState('summary')
+
   const { 
     activeNode,
     attributes,
@@ -25,7 +29,8 @@ const Info = ({ position }) => {
   return (
     <Affix position={position}>
       <Tabs
-        defaultValue='summary'
+        value={activeTab}
+        onChange={setActiveTab}
         color={`hsl(${activeNode.__hue}, 50%, 50%)`}
       >
         <Card
@@ -70,8 +75,9 @@ const Info = ({ position }) => {
               h='100%'
             >
               <Attribs 
-                hue={activeNode.__hue}
+                activeNode={activeNode}
                 attributes={attributes}
+                setActiveTab={setActiveTab}
               />
             </Tabs.Panel>
           </Card.Section>

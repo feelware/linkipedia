@@ -58,6 +58,7 @@ const useData = create((set, get) => ({
         }
 
         if (!(nodeMap.has(item.id))) {
+          item.hover = false
           item.__hue = rootHue
           nodes.push(item)
           nodeMap.set(item.id, item)

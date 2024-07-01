@@ -7,6 +7,7 @@ import {
   Box,
   ScrollArea,
   Button,
+  Center,
   Text,
   useComputedColorScheme,
 } from '@mantine/core'
@@ -14,20 +15,48 @@ import {
 import {
   IconSearch,
   IconChevronDown,
-  IconPointFilled
 } from '@tabler/icons-react'
 
 import { useState } from 'react'
 
-const Attribs = ({ 
+import useData from '../../../store/useData'
+import useActiveNode from '../../../store/useActiveNode'
+import useGraphInteraction from '../../../store/useGraphInteraction'
+
+const Attribs = ({
+  activeNode,
   attributes,
-  hue,
+  setActiveTab,
 }) => {
   const tree = useTree()
   const isThemeDark = useComputedColorScheme('dark') === 'dark'
+  const { 
+    expandItem,
+    nodeMap 
+  } = useData()
+  const { setHoveredNode } = useGraphInteraction()
+  const { setActiveNode } = useActiveNode()
   const [filter, setFilter] = useState('')
   
-  if (!attributes) return null
+  if (!attributes.length) {
+    return (
+      <Center h='100%'>
+        <Stack gap={5}>
+          <Text size='sm'>
+            No attributes yet
+          </Text>
+          <Button
+            variant='default'
+            onClick={() => {
+              expandItem(activeNode)
+            }}
+          >
+            Expand
+          </Button>
+        </Stack>
+      </Center>
+    )
+  }
 
   const data = attributes
   
@@ -62,7 +91,13 @@ const Attribs = ({
     return (
       <>
         <Text
-          size='sm'          
+          size='sm' 
+          onMouseEnter={() => setHoveredNode(node.original_id)}
+          onMouseLeave={() => setHoveredNode(null)}
+          onClick={() => {
+            setActiveNode(nodeMap.get(node.original_id))
+            setActiveTab('summary')
+          }}
         >
           {node.label}
         </Text>
@@ -127,6 +162,6 @@ export default Attribs
 import propTypes from 'prop-types'
 
 Attribs.propTypes = {
+  activeNode: propTypes.object,
   attributes: propTypes.array,
-  hue: propTypes.number
 }

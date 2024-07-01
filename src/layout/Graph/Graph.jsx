@@ -9,15 +9,22 @@ import ForceGraph2D from 'react-force-graph-2d'
 
 import useData from '../../store/useData'
 import useActiveNode from '../../store/useActiveNode'
+import useGraphInteraction from '../../store/useGraphInteraction'
 
 const Graph = () => {
-  const { graphData, expandedItems } = useData()
+  const { graphData } = useData()
   const {
     activeNode,
     setActiveNode,
     clearActiveNode
   } = useActiveNode()
+
   const { width } = useViewportSize()
+  
+  const {
+    hoveredNode
+  } = useGraphInteraction()
+
   const isThemeDark = useComputedColorScheme('light') === 'dark'
   const theme = useMantineTheme()
 
@@ -25,17 +32,38 @@ const Graph = () => {
     ? theme.colors.dark[5]
     : theme.colors.dark[1]
 
-  const assignNodeColor = (node) => {
-    if (node.isProperty) {
+  const assignNodeColor = ({
+    __hue,
+    isProperty,
+    children,
+    id,
+  }) => {
+    if (isProperty) {
       return assignLinkColor()
     }
-    let luminance = isThemeDark ? 65 : 75
-    let saturation = isThemeDark ? 85 : 100
-    if (expandedItems.includes(node)) {
-      luminance = isThemeDark ? 85 : 80
-      saturation = isThemeDark ? 80 : 60
+    const hovered = hoveredNode === id
+    let luminance, saturation
+    if (isThemeDark) {
+      if (children) {
+        luminance = 85
+        saturation = 80
+      }
+      else {
+        luminance = hovered ? 85 : 65 
+        saturation = 85
+      }
     }
-    return `hsl(${node.__hue}, ${saturation}%, ${luminance}%)`
+    else {
+      if (children) {
+        luminance = 80
+        saturation = 60
+      }
+      else {
+        luminance = 75
+        saturation = 100
+      }
+    }
+    return `hsl(${__hue}, ${saturation}%, ${luminance}%)`
   }
 
   const assignNodeVal = ({ size, isProperty }) => isProperty 

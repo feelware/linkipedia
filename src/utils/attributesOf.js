@@ -10,7 +10,8 @@ const attributesOf = (node) => {
       if (!itemSet.has(unique_id)) {
         items.push({
           value: unique_id,
-          label: item.name
+          label: item.name,
+          original_id: item.id
         })
         itemSet.add(unique_id)
       }
