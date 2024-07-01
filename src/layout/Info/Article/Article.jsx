@@ -1,11 +1,11 @@
 import {
   Box,
-  ScrollArea,
   Title,
   Loader,
   Center,
   Image,
   Text,
+  ScrollArea,
 } from '@mantine/core'
 
 const Article = ({ 
@@ -39,9 +39,8 @@ const Article = ({
     <>
       <ScrollArea h='100%'>
         <Box 
-          m={20}
-          mt={30}
-          mb={30}
+          my={30}
+          mx={20}
         >
           <Title>
             {summary.title}

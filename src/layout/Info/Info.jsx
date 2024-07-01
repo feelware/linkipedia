@@ -2,6 +2,7 @@ import {
   Affix,
   Card,
   Tabs,
+  ScrollArea,
 } from '@mantine/core'
 
 import Article from './Article'
@@ -17,6 +18,7 @@ import {
 const Info = ({ position }) => {
   const { 
     activeNode,
+    attributes,
     articleSummary,
     isFetchingSummary 
   } = useActiveNode()
@@ -52,16 +54,25 @@ const Info = ({ position }) => {
           </Card.Section>
 
           <Card.Section h='100%'>
-            <Tabs.Panel h='100%' value='summary'>
+            <Tabs.Panel 
+              value='summary'
+              h='100%'
+            >
               <Article 
                 hue={activeNode.__hue}
                 summary={articleSummary}
                 isFetchingSummary={isFetchingSummary}
               />
             </Tabs.Panel>
+          
 
-            <Tabs.Panel value='attribs'>
-              <Attribs />
+            <Tabs.Panel 
+              value='attribs'
+              h='100%'
+            >
+              <Attribs 
+                attributes={attributes}
+              />
             </Tabs.Panel>
           </Card.Section>
         </Card>

@@ -1,16 +1,20 @@
 import { create } from "zustand"
 import wikipedia from 'wikipedia'
 import wikidata from "../services/wikidata"
+import attributesOf from "../utils/attributesOf"
 
 const useActiveNode = create((set) => ({
   activeNode: null,
   attributes: null,
   articleSummary: null,
-  articleImages: null,
   isFetchingSummary: false,
   setActiveNode: async (activeNode) => {
-
-    set ({ activeNode, isFetchingSummary: true })
+    const attributes = attributesOf(activeNode)
+    set ({ 
+      activeNode,
+      attributes,
+      isFetchingSummary: true 
+    })
     const articleName = await wikidata.getWikipediaArticleNameOf(activeNode.id)
     if (!articleName) {
       set({ 
