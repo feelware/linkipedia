@@ -77,7 +77,7 @@ const useData = create((set, get) => ({
         _property.children.push(item)
       })
 
-      root.size = Math.log10(root.children.length + 1) + 1
+      root.size = 5 * Math.log10(root.children.length + 1) + 1
 
       set({ 
         graphData: { nodes, links }, 

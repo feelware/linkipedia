@@ -1,11 +1,14 @@
-// import {
-//   Tree
-// } from '@mantine/core'
+import {
+  Tree,
+  useTree
+} from '@mantine/core'
 
 const Attribs = () => {
+  const tree = useTree()
+  
   return (
     <>
-      hola
+      
     </>
   )
 }

@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react"
 import { useDebouncedValue } from '@mantine/hooks'
 import { Affix, Combobox, Loader, TextInput, useCombobox } from "@mantine/core"
-import useData from "../../store/useData"
 import wikidata from "../../services/wikidata"
+
+import useData from "../../store/useData"
 
 const SearchBar = ({ position }) => {
   const { expandItem } = useData()

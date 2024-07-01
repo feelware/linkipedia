@@ -2,53 +2,70 @@ import {
   Affix,
   Card,
   Tabs,
-  Transition
 } from '@mantine/core'
 
+import Article from './Article'
 import Attribs from './Attribs'
 
 import useActiveNode from '../../store/useActiveNode'
 
+import {
+  IconBinaryTree2,
+  IconBrandWikipedia
+} from '@tabler/icons-react'
+
 const Info = ({ position }) => {
-  const { activeNode } = useActiveNode()
+  const { 
+    activeNode,
+    articleSummary,
+    articleImages,
+    isFetching 
+  } = useActiveNode()
 
   return (
-    <>
-      <Affix position={position}>
-        <Transition
-          mounted={activeNode}
-          transition='fade-left'
-          duration={500}
+    <Affix position={position}>
+      <Tabs
+        defaultValue='summary'
+        color={`hsl(${activeNode.__hue}, 50%, 50%)`}
+      >
+        <Card
+          h='calc(100vh - 40px)'
+          w={350}
+          withBorder
         >
-          {
-            (styles) => (
-              <Tabs
-                defaultValue="attribs"
+          <Card.Section>
+            <Tabs.List
+              pt={4}
+            >
+              <Tabs.Tab
+                value='summary'
+                leftSection={<IconBrandWikipedia size={15} />}
               >
-                <Card
-                  style={styles}
-                  h='calc(100vh - 40px)'
-                  w={350}
-                  withBorder
-                >
-                  <Card.Section>
-                    <Tabs.List>
-                      <Tabs.Tab value="attribs">
-                        Atributos
-                      </Tabs.Tab>
-                    </Tabs.List>
-                  </Card.Section>
+                Summary
+              </Tabs.Tab>
+              <Tabs.Tab 
+                value='attribs'
+                leftSection={<IconBinaryTree2 size={15} />}
+              >
+                Attributes
+              </Tabs.Tab>
+            </Tabs.List>
+          </Card.Section>
 
-                  <Tabs.Panel value="attribs">
-                    <Attribs />
-                  </Tabs.Panel>
-                </Card>
-              </Tabs>
-            )
-          }
-        </Transition>
-      </Affix>
-    </>
+          <Tabs.Panel h='100%' value='summary'>
+            <Article 
+              articleSummary={articleSummary}
+              articleImages={articleImages}
+              isFetching={isFetching}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value='attribs'>
+            <Attribs />
+          </Tabs.Panel>
+        </Card>
+      </Tabs>
+    </Affix>
   )
 }
 

@@ -76,7 +76,23 @@ const getBindingsOf = async (itemId) => {
   }))
 }
 
+const getWikipediaArticleNameOf = async (itemId) => {
+  const url = wikidata_base_url
+  + '&action=wbgetentities'
+  + `&ids=${itemId}`
+  + '&props=sitelinks'
+  + '&sitefilter=enwiki'
+  const res = await axios.get(url, { headers })
+  const siteLinks = res.data.entities[itemId].sitelinks
+  if (!siteLinks.enwiki) {
+    return null
+  }
+  const articleName = res.data.entities[itemId].sitelinks.enwiki.title
+  return articleName
+}
+
 export default {
   searchArticles,
+  getWikipediaArticleNameOf,
   getBindingsOf
 }

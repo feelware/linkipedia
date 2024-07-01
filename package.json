@@ -10,15 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/carousel": "^7.11.0",
     "@mantine/core": "^7.11.0",
     "@mantine/hooks": "^7.8.1",
     "@tabler/icons-react": "^3.7.0",
     "axios": "^1.6.8",
+    "embla-carousel-react": "^7.1.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-force-graph-2d": "^1.25.4",
     "react-icons": "^5.1.0",
+    "wikipedia": "^2.1.2",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

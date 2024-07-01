@@ -21,8 +21,6 @@ const Graph = () => {
   const isThemeDark = useComputedColorScheme('light') === 'dark'
   const theme = useMantineTheme()
 
-  console.log(graphData.nodes)
-
   const assignLinkColor = () => isThemeDark
     ? theme.colors.dark[5]
     : theme.colors.dark[1]
@@ -45,6 +43,9 @@ const Graph = () => {
     : size
 
   const handleNodeClick = (node) => {
+    if (node.isProperty) {
+      return
+    }
     if (activeNode?.id === node.id) {
       clearActiveNode()
       return
