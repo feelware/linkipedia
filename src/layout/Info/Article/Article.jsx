@@ -30,7 +30,11 @@ const Article = ({
   if (!summary.pageid) {
     return (
       <>
-        <p>Article not found</p>
+        <Center h='100%'>
+          <Text size='sm' c='dimmed'>
+            This WikiData item has no associated Wikipedia article
+          </Text>
+        </Center>
       </>
     )
   }

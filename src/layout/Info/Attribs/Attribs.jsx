@@ -47,9 +47,6 @@ const Attribs = ({
   // useEffect(() => {
   //   tree.expandAllNodes()
   // }, [filter])
-
-  console.log(activeNode)
-  console.log(attributes)
   
   if (!attributes.length) {
     return (
