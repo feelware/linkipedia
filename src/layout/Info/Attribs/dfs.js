@@ -24,6 +24,4 @@ const dfs = (expandedItems, activeNode) => {
     return result;
 };
 
-
-
 export default dfs;

@@ -1,16 +1,18 @@
 import {
-  Center
+  Box,
+  ScrollArea,
+  Title,
 } from '@mantine/core'
 
 import Images from './Images'
 
 const Article = ({ 
-  articleSummary,
-  articleImages, 
-  isFetching, 
+  summary,
+  images, 
+  isFetchingSummary, 
 }) => {
 
-  if (isFetching) {
+  if (isFetchingSummary) {
     return (
       <>
         <p>Loading...</p>
@@ -18,24 +20,32 @@ const Article = ({
     )
   }
 
-  if (!articleSummary.pageid) {
+  if (!summary.pageid) {
     return (
       <>
         <p>Article not found</p>
       </>
     )
   }
-
-  console.log(articleSummary.extract_html)
   
+
   return (
     <>
-      <Center h='100%'>
-        <Images images={articleImages} />
-        <div
-          dangerouslySetInnerHTML={{ __html: articleSummary.extract_html }} 
-        />
-      </Center>
+      <ScrollArea h='100%'>
+        <Box 
+          m={20}
+          mt={30}
+        >
+          <Title>
+            {summary.title}
+          </Title>
+          <div 
+            dangerouslySetInnerHTML={{ 
+              __html: summary.extract_html 
+            }} 
+          />
+        </Box>
+      </ScrollArea>
     </>
   )
 }
@@ -45,7 +55,7 @@ export default Article
 import propTypes from 'prop-types'
 
 Article.propTypes = {
-  articleSummary: propTypes.object,
-  articleImages: propTypes.array,
-  isFetching: propTypes.bool
+  summary: propTypes.object,
+  images: propTypes.array,
+  isFetchingSummary: propTypes.bool
 }

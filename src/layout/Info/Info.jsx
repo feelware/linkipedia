@@ -19,7 +19,7 @@ const Info = ({ position }) => {
     activeNode,
     articleSummary,
     articleImages,
-    isFetching 
+    isFetchingSummary 
   } = useActiveNode()
 
   return (
@@ -52,17 +52,19 @@ const Info = ({ position }) => {
             </Tabs.List>
           </Card.Section>
 
-          <Tabs.Panel h='100%' value='summary'>
-            <Article 
-              articleSummary={articleSummary}
-              articleImages={articleImages}
-              isFetching={isFetching}
-            />
-          </Tabs.Panel>
+          <Card.Section h='100%'>
+            <Tabs.Panel h='100%' value='summary'>
+              <Article 
+                summary={articleSummary}
+                images={articleImages}
+                isFetchingSummary={isFetchingSummary}
+              />
+            </Tabs.Panel>
 
-          <Tabs.Panel value='attribs'>
-            <Attribs />
-          </Tabs.Panel>
+            <Tabs.Panel value='attribs'>
+              <Attribs />
+            </Tabs.Panel>
+          </Card.Section>
         </Card>
       </Tabs>
     </Affix>

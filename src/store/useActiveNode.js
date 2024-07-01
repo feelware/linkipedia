@@ -6,28 +6,30 @@ const useActiveNode = create((set) => ({
   activeNode: null,
   articleSummary: null,
   articleImages: null,
-  isFetching: false,
+  isFetchingSummary: false,
   setActiveNode: async (activeNode) => {
-    set ({ activeNode, isFetching: true })
+    set ({ activeNode, isFetchingSummary: true })
     const articleName = await wikidata.getWikipediaArticleNameOf(activeNode.id)
     if (!articleName) {
       set({ 
         articleSummary: { pageid: null },
-        isFetching: false
+        isFetchingSummary: false
       })
       return
     }
     const articleSummary = await wikipedia.summary(articleName)
     set({ 
       articleSummary,
-      isFetching: false 
+      isFetchingSummary: false 
     })
+    const articleImages = await wikipedia.images(articleName)
+    console.log(articleImages)
   },
   clearActiveNode: () => set({ 
     activeNode: null,
     articleSummary: null,
     articleImages: null,
-    isFetching: false
+    isFetchingSummary: false
   })
 }))
 
