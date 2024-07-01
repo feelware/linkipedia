@@ -2,6 +2,7 @@ import {
   Box,
   ScrollArea,
   Title,
+  Text,
 } from '@mantine/core'
 
 import Images from './Images'
@@ -28,6 +29,7 @@ const Article = ({
     )
   }
   
+  console.log(summary)
 
   return (
     <>
@@ -39,6 +41,15 @@ const Article = ({
           <Title>
             {summary.title}
           </Title>
+
+          <Text
+            size='sm'
+            c='dimmed'
+            pt={12}
+          >
+            {summary.description}
+          </Text>
+
           <div 
             dangerouslySetInnerHTML={{ 
               __html: summary.extract_html 
