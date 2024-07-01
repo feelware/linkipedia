@@ -9,7 +9,7 @@ import ForceGraph2D from 'react-force-graph-2d'
 
 import useData from '../../store/useData'
 import useActiveNode from '../../store/useActiveNode'
-import useGraphInteraction from '../../store/useGraphInteraction'
+// import useGraphInteraction from '../../store/useGraphInteraction'
 
 const Graph = () => {
   const { graphData } = useData()
@@ -21,9 +21,9 @@ const Graph = () => {
 
   const { width } = useViewportSize()
   
-  const {
-    hoveredNode
-  } = useGraphInteraction()
+  // const {
+  //   hoveredNode
+  // } = useGraphInteraction()
 
   const isThemeDark = useComputedColorScheme('light') === 'dark'
   const theme = useMantineTheme()
@@ -36,12 +36,12 @@ const Graph = () => {
     __hue,
     isProperty,
     children,
-    id,
+    // id,
   }) => {
     if (isProperty) {
       return assignLinkColor()
     }
-    const hovered = hoveredNode === id
+    // const hovered = hoveredNode === id
     let luminance, saturation
     if (isThemeDark) {
       if (children) {
@@ -49,7 +49,7 @@ const Graph = () => {
         saturation = 80
       }
       else {
-        luminance = hovered ? 85 : 65 
+        luminance = 65
         saturation = 85
       }
     }

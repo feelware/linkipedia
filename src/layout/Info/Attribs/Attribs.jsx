@@ -17,26 +17,34 @@ import {
   IconChevronDown,
 } from '@tabler/icons-react'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 
 import useData from '../../../store/useData'
 import useActiveNode from '../../../store/useActiveNode'
-import useGraphInteraction from '../../../store/useGraphInteraction'
+
+import filterTree from '../../../utils/filterTree'
+// import allPropsExpanded from '../../../utils/allPropsExpanded'
 
 const Attribs = ({
   activeNode,
   attributes,
   setActiveTab,
 }) => {
-  const tree = useTree()
   const isThemeDark = useComputedColorScheme('dark') === 'dark'
   const { 
     expandItem,
     nodeMap 
   } = useData()
-  const { setHoveredNode } = useGraphInteraction()
   const { setActiveNode } = useActiveNode()
   const [filter, setFilter] = useState('')
+  const data = useMemo(
+    () => filterTree(attributes, filter),
+    [attributes, filter]
+  )
+  const tree = useTree()
+  // useEffect(() => {
+  //   tree.expandAllNodes()
+  // }, [filter])
   
   if (!attributes.length) {
     return (
@@ -57,8 +65,6 @@ const Attribs = ({
       </Center>
     )
   }
-
-  const data = attributes
   
   const renderNode = ({ 
     node, 
@@ -92,8 +98,6 @@ const Attribs = ({
       <>
         <Text
           size='sm' 
-          onMouseEnter={() => setHoveredNode(node.original_id)}
-          onMouseLeave={() => setHoveredNode(null)}
           onClick={() => {
             setActiveNode(nodeMap.get(node.original_id))
             setActiveTab('summary')
@@ -126,18 +130,6 @@ const Attribs = ({
           value={filter}
           onChange={(event) => setFilter(event.currentTarget.value)}
         />
-        <ScrollArea 
-          h='100vh'
-          bg={isThemeDark ? 'dark.7' : 'gray.2'}
-          style={{ borderRadius: 'var(--mantine-radius-sm)' }}
-        >
-          <Tree 
-            data={data}
-            tree={tree}
-            m={20}
-            renderNode={renderNode}
-          />
-        </ScrollArea>
         <Group grow>
           <Button 
             variant='default'
@@ -152,6 +144,19 @@ const Attribs = ({
             Collapse all
           </Button>
         </Group>
+        <ScrollArea 
+          h='100vh'
+          bg={isThemeDark ? 'dark.7' : 'gray.2'}
+          style={{ borderRadius: 'var(--mantine-radius-sm)' }}
+        >
+          <Tree 
+            data={data}
+            tree={tree}
+            m={20}
+            renderNode={renderNode}
+          />
+        </ScrollArea>
+
       </Stack>
     </>
   )
@@ -164,4 +169,5 @@ import propTypes from 'prop-types'
 Attribs.propTypes = {
   activeNode: propTypes.object,
   attributes: propTypes.array,
+  setActiveTab: propTypes.func,
 }
