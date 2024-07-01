@@ -2,7 +2,6 @@ import {
   Affix,
   Card,
   Tabs,
-  ScrollArea,
 } from '@mantine/core'
 
 import Article from './Article'
@@ -31,7 +30,7 @@ const Info = ({ position }) => {
       >
         <Card
           h='calc(100vh - 40px)'
-          w={350}
+          w={450}
           withBorder
         >
           <Card.Section>
@@ -71,6 +70,7 @@ const Info = ({ position }) => {
               h='100%'
             >
               <Attribs 
+                hue={activeNode.__hue}
                 attributes={attributes}
               />
             </Tabs.Panel>

@@ -40,15 +40,16 @@ const useData = create((set, get) => ({
 
       bindings.forEach(({ property, item }) => {
         let _property
+
         if (!(nodeMap.has(property.id))) {
-          nodes.push(property)
-          nodeMap.set(property.id, property)
-          property.children = []
           _property = property
-          root.children.push(property)
+          _property.children = []
+          root.children.push(_property)
+          nodeMap.set(_property.id, _property)
+          nodes.push(_property)
           links.push({
             source: root.id,
-            target: property.id,
+            target: _property.id,
             rootToProperty: true
           })
         }
@@ -60,7 +61,8 @@ const useData = create((set, get) => ({
           item.__hue = rootHue
           nodes.push(item)
           nodeMap.set(item.id, item)
-        } else {
+        } 
+        else {
           if(!(expandedItems.some(expandedItem => expandedItem.id === item.id))) {
             const existingNode = state.nodeMap.get(item.id)
             if(existingNode) {
@@ -70,10 +72,11 @@ const useData = create((set, get) => ({
         }
 
         links.push({
-          source: property.id,
+          source: _property.id,
           target: item.id
         })
 
+        // console.log(item)
         _property.children.push(item)
       })
 
